@@ -1,0 +1,7 @@
+bounty hunter -> State target <bounty>
+
+Trades
+Mafia ->
+Merchant -> Buff of some cards
+Genral -> 
+Commander ->
