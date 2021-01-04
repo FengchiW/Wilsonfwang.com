@@ -7,27 +7,46 @@
 var app = require('../app');
 var debug = require('debug')('my-website:server');
 var http = require('http');
+var https = require('https');
+var fs = require('fs');
+
+/**
+ * HTTPS Cert and Key
+ */
+
+var options = {
+  key: fs.readFileSync('/etc/letsencrypt/live/wilsonfwang.com/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/wilsonfwang.com/fullchain.pem')
+};
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '80');
+var port = normalizePort(process.env.PORT || '443');
 app.set('port', port);
 
 /**
- * Create HTTP server.
+ * Create HTTP and HTTPS servers.
  */
 
-var server = http.createServer(app);
+var server = https.createServer(options, app)
+
+var httpserver = http.createServer(function (req, res) {
+  res.redirect(302, 'https://wilsonfwang.com/')
+})
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
+httpserver.listen(80);
+httpserver.on('http error', onError);
+httpserver.on('http listening', onListening);
+
 server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+server.on('https error', onError);
+server.on('https listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
