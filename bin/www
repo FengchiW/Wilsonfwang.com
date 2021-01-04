@@ -33,7 +33,8 @@ app.set('port', port);
 var server = https.createServer(options, app)
 
 var httpserver = http.createServer(function (req, res) {
-  res.redirect(302, 'https://wilsonfwang.com/')
+  res.writeHead(302, {'Location': 'https://wilsonfwang.com' + req.url});
+  res.end();
 })
 
 /**
