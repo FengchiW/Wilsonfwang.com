@@ -8,6 +8,7 @@ var app = require('../app');
 var debug = require('debug')('my-website:server');
 var http = require('http');
 var https = require('https');
+var io = require("socket.io")(https);
 var fs = require('fs');
 
 /**
@@ -44,6 +45,15 @@ var httpserver = http.createServer(function (req, res) {
 httpserver.listen(80);
 httpserver.on('http error', onError);
 httpserver.on('http listening', onListening);
+
+/**
+ * Socket server that is listening on port 443 for some god forsaken reason.
+ */
+
+io.sockets.on('connection', function (socket)
+{
+  console.log('Client Connected')
+})
 
 server.listen(port);
 server.on('https error', onError);
