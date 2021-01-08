@@ -22,11 +22,36 @@
             {
                 const uname = getCookie("uname")
                 const urlParams = new URLSearchParams(window.location.search);
-                const myParam = urlParams.get('code');
+                const code = urlParams.get('code');
                 const socket = io().connect();
+
+                
 
                 var gamescreen = document.getElementById("gamescreen");
                 var ctx = gamescreen.getContext("2d");
+
+                function resizeCanvas() {
+                    gamescreen.width = window.innerWidth;
+                    gamescreen.height = window.innerHeight;
+
+                    draw()
+                    
+                }
+                resizeCanvas();
+                
+                window.addEventListener('resize', resizeCanvas, false);
+
+                function draw(){
+                    const { width, height } = gamescreen.getBoundingClientRect();
+
+                    ctx.fillStyle = "#FF0000";
+                    ctx.fillRect(0, 0, width, height);
+
+                    ctx.fillStyle = '#000000';
+                    ctx.font = "30px Arial";
+                    ctx.textAlign = "center";
+                    ctx.fillText("Gold! Waiting for players...", width/2, height/2);
+                }
 
                 socket.on("connect", () => {
                     console.log(socket.id);
@@ -39,9 +64,17 @@
 
             }
         </script>
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                overflow: hidden;
+            }
+        </style>
     </head>
     <body onload="gamestart();">
-        <canvas id="gamescreen" width="200" height="100" style="border:1px solid #000000;">
+        <canvas id="gamescreen">
 
         </canvas>
     </body>
