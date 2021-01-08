@@ -78,6 +78,7 @@ router.route('/creategame')
   const stmt = db.prepare('INSERT INTO games VALUES (?,?,?,?,?,?)')
   stmt.run(user_name, game, psw, 0, mp, code);
 
+  res.cookie('uname', user_name)
   res.redirect(301, '/gold/play?code=' + code);
 });
 

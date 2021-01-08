@@ -59,9 +59,9 @@ io.on('connection', (socket) => {
   /**
    * Gold Game Server code
    */
-  socket.on('create', function(room){
-    socket.join(room);
-    console.log("Joined" + room);
+  socket.on('joingame', function(code){
+    socket.join(code);
+    console.log("User Joined" + code);
   });
 
   socket.on('disconnect', function() {
