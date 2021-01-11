@@ -1,17 +1,5 @@
 var express = require('express');
 var cookieParser = require('cookie-parser');
-const Database = require('better-sqlite3');
-var db = new Database('./database/goldgame.db', { verbose: console.log });
-
-db.exec(`
-CREATE TABLE IF NOT EXISTS games (
-  hostname TEXT,
-  gamename TEXT,
-  password TEXT,
-  players TINYINT,
-  maxplayers TINYINT,
-  code SMALLINT)
-`);
 
 process.on('exit', () => db.close());
 process.on('SIGHUP', () => process.exit(128 + 1));
