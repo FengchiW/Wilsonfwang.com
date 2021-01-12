@@ -7,39 +7,47 @@
 var app = require('../app');
 var debug = require('debug')('my-website:server');
 var http = require('http');
-// var https = require('https');
+var https = require('https');
 var fs = require('fs');
+var localhost = true;
 
 /**
  * HTTPS Cert and Key
  */
 
- /*
-var options = {
-  key: fs.readFileSync('/etc/letsencrypt/live/wilsonfwang.com/privkey.pem'),
-  cert: fs.readFileSync('/etc/letsencrypt/live/wilsonfwang.com/fullchain.pem')
-}; */
+var options;
+
+if (!localhost){
+  options = {
+    key: fs.readFileSync('/etc/letsencrypt/live/wilsonfwang.com/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/wilsonfwang.com/fullchain.pem')
+  };
+} else {
+  options = {
+    key: fs.readFileSync('bin/localhost.key'),
+    cert: fs.readFileSync('bin/localhost.crt')
+  }
+}
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '80');
+var port = normalizePort(process.env.PORT || '443');
 app.set('port', port);
 
 /**
  * Create HTTP and HTTPS servers.
  */
 
-// var server = https.createServer(options, app)
+var server = https.createServer(options, app)
 
-var httpserver = http.createServer(app)
-  /*function (req, res) {
-  res.writeHead(302, {'Location': 'https://wilsonfwang.com' + req.url});
+var httpserver = http.createServer( function (req, res) {
+  res.writeHead(302, {'Location':  "https://" + req.headers.host + req.url});
   res.end();
-}) */
+})
 
-var io = require("socket.io")(httpserver); // change this on dev
+var io = require("socket.io")(server); // change this on dev
 
 /**
  * Listen on provided port, on all network interfaces.
@@ -69,10 +77,9 @@ io.on('connection', (socket) => {
   });
 });
 
-/*
 server.listen(port);
 server.on('https error', onError);
-server.on('https listening', onListening); */
+server.on('https listening', onListening);
 
 /**
  * Normalize a port into a number, string, or false.
