@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var goldRouter = require('./routes/gold');
+var class4coronaRouter = require('./routes/c4ct');
 var projectRouter = require('./routes/projects')
 
 var app = express();
@@ -22,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/gold', goldRouter);
+app.use('/class4corona', class4coronaRouter);
 app.use('/projects', projectRouter)
 
 // catch 404 and forward to error handler

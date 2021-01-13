@@ -9,7 +9,7 @@ var debug = require('debug')('my-website:server');
 var http = require('http');
 var https = require('https');
 var fs = require('fs');
-var localhost = true;
+var localhost = false; // change this when ready to update
 
 /**
  * HTTPS Cert and Key
