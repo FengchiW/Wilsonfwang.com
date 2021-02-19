@@ -27,6 +27,11 @@ html {
   letter-spacing: .15em;
 }
 
+.typewriter p span {
+  border-right: .05em solid;
+  animation: caret 1s steps(1) infinite;
+}
+
 ::selection {
   background: #0080FF;
   text-shadow: none;

@@ -17,8 +17,11 @@ $('document').ready(function() {
 
   function compileText(text, i, fnCallback, line) {
     if (i < (text.length)) {
-      console.log(line)
-      $(lines[line]).html(consoleText + text.substring(0, i+1) +'<span aria-hidden="true"></span>');
+      caret = '<span aria-hidden="true"></span>'
+      if (i === text.length - 1) {
+        caret = ''
+      }
+      $(lines[line]).html(consoleText + text.substring(0, i+1) + caret);
 
       setTimeout(function() {
         compileText(text, i + 1, fnCallback, line)
