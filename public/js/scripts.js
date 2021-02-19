@@ -1,69 +1,55 @@
+$('document').ready(function() {
+  var consoleText = "root@wilsonfwang~# "
+  var lines = ["#line1", "#line2"]
+  var dataText = [
+    "gcc index_page.c -o index.out",
+    "./index.out",
+    "index"];
   
-/*!
-    * Start Bootstrap - Freelancer v6.0.3 (https://startbootstrap.com/themes/freelancer)
-    * Copyright 2013-2020 Start Bootstrap
-    * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-freelancer/blob/master/LICENSE)
-    */
-   (function($) {
-    "use strict"; // Start of use strict
-  
-    // Smooth scrolling using jQuery easing
-    $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {
-      if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
-        var target = $(this.hash);
-        target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-        if (target.length) {
-          $('html, body').animate({
-            scrollTop: (target.offset().top - 71)
-          }, 1000, "easeInOutExpo");
-          return false;
-        }
-      }
-    });
-  
-    // Scroll to top button appear
-    $(document).scroll(function() {
-      var scrollDistance = $(this).scrollTop();
-      if (scrollDistance > 100) {
-        $('.scroll-to-top').fadeIn();
-      } else {
-        $('.scroll-to-top').fadeOut();
-      }
-    });
-  
-    // Closes responsive menu when a scroll trigger link is clicked
-    $('.js-scroll-trigger').click(function() {
-      $('.navbar-collapse').collapse('hide');
-    });
-  
-    // Activate scrollspy to add active class to navbar items on scroll
-    $('body').scrollspy({
-      target: '#mainNav',
-      offset: 80
-    });
-  
-    // Collapse Navbar
-    var navbarCollapse = function() {
-      if ($("#mainNav").offset().top > 100) {
-        $("#mainNav").addClass("navbar-shrink");
-      } else {
-        $("#mainNav").removeClass("navbar-shrink");
-      }
-    };
-    // Collapse now if page is not at top
-    navbarCollapse();
-    // Collapse the navbar when page is scrolled
-    $(window).scroll(navbarCollapse);
-  
-    // Floating label headings for the contact form
-    $(function() {
-      $("body").on("input propertychange", ".floating-label-form-group", function(e) {
-        $(this).toggleClass("floating-label-form-group-with-value", !!$(e.target).val());
-      }).on("focus", ".floating-label-form-group", function() {
-        $(this).addClass("floating-label-form-group-with-focus");
-      }).on("blur", ".floating-label-form-group", function() {
-        $(this).removeClass("floating-label-form-group-with-focus");
-      });
-    });
-  
-  })(jQuery); // End of use strict
+  function hideElements()
+  {
+    $("#Main").hide()
+    $("#Projects").hide()
+    $("#Hire").hide()
+    $("#footerpad").hide()
+  }
+  hideElements()
+
+  function compileText(text, i, fnCallback, line) {
+    if (i < (text.length)) {
+      console.log(line)
+      $(lines[line]).html(consoleText + text.substring(0, i+1) +'<span aria-hidden="true"></span>');
+
+      setTimeout(function() {
+        compileText(text, i + 1, fnCallback, line)
+      }, 50);
+    }
+
+    else if (typeof fnCallback == 'function') {
+      setTimeout(fnCallback, 300);
+    }
+  }
+
+  function StartIndexPage(){
+    $(".typewriter").fadeOut()
+    $("#Main").fadeIn(2000)
+    $("#Projects").fadeIn(2000)
+    $("#Hire").fadeIn(2000)
+    $("#footerpad").fadeIn(2000)
+    $(".typewriter").remove()
+  }
+
+  function StartTextAnimation(i, line) {
+    if (dataText[i] === 'index'){
+      setTimeout(function() {
+        StartIndexPage();
+      }, 500);
+    }
+    else if (i < dataText[i].length) {
+      compileText(dataText[i], 0, function(){
+        StartTextAnimation(i + 1, (line + 1) % 2);
+      }, line);
+    }
+  }
+  StartTextAnimation(0, 0);
+});

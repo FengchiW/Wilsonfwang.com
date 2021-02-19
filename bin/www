@@ -9,7 +9,7 @@ var debug = require('debug')('my-website:server');
 var http = require('http');
 var https = require('https');
 var fs = require('fs');
-var localhost = false; // change this when ready to update
+var localhost = true; // change this when ready to update
 
 /**
  * HTTPS Cert and Key
@@ -29,11 +29,20 @@ if (!localhost){
   }
 }
 
+
+var httpport = 80;
+var httpsport = 443;
+
+if(localhost)
+{
+  httpport = 3000;
+  httpsport = '3443';
+}
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '443');
+var port = normalizePort(process.env.PORT || httpsport);
 app.set('port', port);
 
 /**
@@ -53,7 +62,7 @@ var io = require("socket.io")(server); // change this on dev
  * Listen on provided port, on all network interfaces.
  */
 
-httpserver.listen(80);
+httpserver.listen(httpport);
 httpserver.on('http error', onError);
 httpserver.on('http listening', onListening);
 
